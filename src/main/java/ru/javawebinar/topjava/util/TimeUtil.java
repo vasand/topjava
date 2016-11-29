@@ -1,5 +1,8 @@
 package ru.javawebinar.topjava.util;
 
+import ru.javawebinar.topjava.model.UserMeal;
+
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 /**
@@ -11,5 +14,12 @@ public class TimeUtil {
         return lt.compareTo(startTime) >= 0 && lt.compareTo(endTime) <= 0;
     }
 
+    public static LocalTime toLocalTime(UserMeal userMeal){
+        return userMeal.getDateTime().toLocalTime();
+    }
+
+    public static LocalDate toLocalDate(UserMeal userMeal){
+        return userMeal.getDateTime().toLocalDate();
+    }
 }
 
