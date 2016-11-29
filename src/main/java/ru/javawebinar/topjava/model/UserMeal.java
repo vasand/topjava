@@ -31,3 +31,4 @@ public class UserMeal {
         return calories;
     }
 }
+
