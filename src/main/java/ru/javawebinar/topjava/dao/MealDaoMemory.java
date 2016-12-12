@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class MealDaoMemory implements MealDao {
 
     private static final Logger LOG = LoggerFactory.getLogger(MealDaoMemory.class);
-    private List<Meal> mealList = new CopyOnWriteArrayList<>();
+    private CopyOnWriteArrayList<Meal> mealList = new CopyOnWriteArrayList<>();
 
     @Override
     public void add(Meal meal) {
@@ -25,16 +25,16 @@ public class MealDaoMemory implements MealDao {
             return;
         }
         Meal mealForAdd = new Meal(meal.getDateTime(), meal.getDescription(), meal.getCalories());
-        mealList.add(mealForAdd);
-        mealForAdd.setId(mealList.indexOf(mealForAdd));
+        mealList.addIfAbsent(mealForAdd);
+        mealForAdd.setId(mealList.indexOf(mealForAdd)+1);
         LOG.info("Meal was added. Meal:" + mealForAdd);
     }
 
     @Override
     public void delete(int id) {
         if (mealList.size()>id){
-            Meal mealForDelete = getById(id);
-            mealList.set(id, null);
+            Meal mealForDelete = getById(id-1);
+            mealList.set(id-1, null);
             LOG.info("Meal was deleted. Meal:" + mealForDelete);
         }else LOG.info("Nothing for delete by Id = " + id);
     }
@@ -54,11 +54,11 @@ public class MealDaoMemory implements MealDao {
 
     @Override
     public Meal getById(int id) {
-        if (mealList.size()<=id || mealList.get(id)==null){
+        if (mealList.size()<=id || mealList.get(id-1)==null){
             LOG.info("Storage not contains meal with Id=" + id);
             return null;
         }
-        Meal meal = new Meal(mealList.get(id));
+        Meal meal = new Meal(mealList.get(id-1));
         LOG.info("Meal was loaded. Meal:" +meal);
         return meal;
     }

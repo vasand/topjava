@@ -56,7 +56,6 @@
 
 <h1>Meal list</h1>
 
-<form action="<c:url value="/meals"/>" method="POST">
 <table class="tg">
     <tr>
         <th width="20">ID</th>
@@ -78,96 +77,45 @@
     </c:forEach>
 </table>
 
-<h1>Add / Edit a Meal</h1>
-    table>
-    <tr>
-        <td><input type="submit" value="Add" name="Add"/></td>
-        <td><input type="submit" value="Edit" name="Edit"/></td>
-        <td><input type="submit" value="Delete" name="Delete"/></td>
-    </tr>
-    </table>
-    <a href="<c:url value='/meals/add?id=${meal.id}'/>">add</a>
-</form>
-<%--
+<h2>Add / Edit a User</h2>
+
 <c:url var="addAction" value="/meals/add"/>
 
-<form:form action="${addAction}" commandName="user">
-    <input type="hidden" name = "page" value="${page}"/>
-    <input type="hidden" name = "userName" value="${userName}"/>
+<form action="${addAction}" commandName="meal">
     <table>
-        <c:if test="${!empty user.name}">
+        <c:if test="${!empty meal.description}">
             <tr>
+                <td>ID</td>
                 <td>
-                    <form:label path="id">
-                        <spring:message text="ID"/>
-                    </form:label>
-                </td>
-                <td>
-                    <form:input path="id" readonly="true" size="8" disabled="true"/>
-                    <form:hidden path="id"/>
+                    <input name="id" readonly="true" size="8" disabled="true"/>
+                    <hidden path="id"/>
                 </td>
             </tr>
         </c:if>
         <tr>
+            <td>Date-time</td>
             <td>
-                <form:label path="name">
-                    <spring:message text="Name"/>
-                </form:label>
-            </td>
-            <td>
-                <form:input path="name"/>
+                <input name="dateTime"/>
             </td>
         </tr>
         <tr>
+            <td>Description</td>
             <td>
-                <form:label path="age">
-                    <spring:message text="Age"/>
-                </form:label>
-            </td>
-            <td>
-                <form:input path="age"/>
+                <input name="description"/>
             </td>
         </tr>
         <tr>
+            <td>Calories</td>
             <td>
-                <form:label path="admin">
-                    <spring:message text="Admin"/>
-                </form:label>
-            </td>
-            <td>
-                <form:select path="admin">
-                    <form:option value="false">false</form:option>
-                    <form:option value="true">true</form:option>
-                </form:select>
+                <input name="calories"/>
             </td>
         </tr>
-        <c:if test="${!empty user.name}">
-            <tr>
-                <td>
-                    <form:label path="createDate">
-                        <spring:message text="Create date"/>
-                    </form:label>
-                </td>
-                <td>
-                    <form:input type = "date" path="createDate" readonly="true" size="8" disabled="true"/>
-                    <form:hidden path="createDate"/>
-                </td>
-            </tr>
-        </c:if>
         <tr>
             <td colspan="2">
-                <c:if test="${!empty user.name}">
-                    <input type="submit"
-                           value="<spring:message text="Save"/>"/>
-                </c:if>
-                <c:if test="${empty user.name}">
-                    <input type="submit"
-                           value="<spring:message text="Add User"/>"/>
-                </c:if>
+                <input type="submit" value="${!empty meal.description ? Save:Add}"/>
             </td>
         </tr>
     </table>
-</form:form>
---%>
+</form>
 </body>
 </html>

@@ -31,18 +31,41 @@ public class MealServlet extends HttpServlet {
 
     private void doAction(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         request.setCharacterEncoding("UTF-8");
-        int action = getAction(request);
+        String action = getAction(request);
+        LOG.debug("Action = "+action);
+
+        String mealId = "";
+        String mealDateTime = "";
+        String mealDescription = "";
+        String mealCalories = "";
+
+        switch (action){
+            case "add":
+                mealId = request.getParameter("id");
+                mealDateTime = request.getParameter("dateTime");
+                mealDescription = request.getParameter("description");
+                mealCalories = request.getParameter("calories");
+                break;
+            case "remove":
+                mealId = request.getParameter("id");
+
+                break;
+            case "edit":
+                mealId = request.getParameter("id");
+
+                break;
+
+        }
+        LOG.debug("Action parameters: id=" + mealId + ", dateTime=" + mealDateTime + ", description=" + mealDescription + ", calories=" + mealCalories);
         LOG.debug("forward to meals");
-        LOG.debug("Path = "+request.getPathTranslated());
-        LOG.debug("Path = "+request.getPathInfo());
-
-        mealDao.add(new Meal(LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500));
-        request.setAttribute("mealList", mealDao.getAll());
         request.getRequestDispatcher("/meals.jsp").forward(request, response);
+    }
+
+    private String getAction(HttpServletRequest request){
+
+        String pathInfo = request.getPathInfo();
+        return pathInfo==null?"":pathInfo.trim().substring(1);
 
     }
 
-    private int getAction(HttpServletRequest request) {
-        return 0;
-    }
 }
