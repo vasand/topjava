@@ -10,6 +10,7 @@
 <%@ page session="false" %>
 <html>
 <head>
+    <meta charset="utf-8">
     <title>Meal </title>
 
     <style type="text/css">
@@ -68,11 +69,11 @@
     <c:forEach var="meal" items="${mealList}">
         <tr>
             <td>${meal.id}</td>
-            <td>${meal.dateTime}</td>
+            <td>${meal.date} ${meal.time}</td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
-            <td><a href="<c:url value='/edit?id=${meal.id}'/>">Edit</a></td>
-            <td><a href="<c:url value='/remove?id=${meal.id}'/>">Delete</a></td>
+            <td><a href="<c:url value='/meals/edit?id=${meal.id}'/>">Edit</a></td>
+            <td><a href="<c:url value='/meals/remove?id=${meal.id}'/>">Delete</a></td>
         </tr>
     </c:forEach>
 </table>
@@ -81,39 +82,31 @@
 
 <c:url var="addAction" value="/meals/add"/>
 
-<form action="${addAction}" commandName="meal">
+<form action="${addAction}" commandName="meal" method="post">
     <table>
-        <c:if test="${!empty meal.description}">
+        <c:if test="${!empty curMeal.description}">
             <tr>
                 <td>ID</td>
                 <td>
-                    <input name="id" readonly="true" size="8" disabled="true"/>
-                    <hidden path="id"/>
+                    <input type="text" name="id" value="${curMeal.id}" readonly="true" size="8" disabled="true"/>
+                    <input type="hidden" name="id" value="${curMeal.id}">
                 </td>
             </tr>
         </c:if>
         <tr>
             <td>Date-time</td>
-            <td>
-                <input name="dateTime"/>
-            </td>
+            <td><input type="datetime-local" value="${curMeal.dateTime}" name="dateTime"/></td>
         </tr>
         <tr>
             <td>Description</td>
-            <td>
-                <input name="description"/>
-            </td>
+            <td><input type="text" name="description" value="${curMeal.description}"/></td>
         </tr>
         <tr>
             <td>Calories</td>
-            <td>
-                <input name="calories"/>
-            </td>
+            <td><input type="number" name="calories" value="${curMeal.calories}"/></td>
         </tr>
         <tr>
-            <td colspan="2">
-                <input type="submit" value="${!empty meal.description ? Save:Add}"/>
-            </td>
+            <td colspan="2"><input type="submit" value="${!empty curMeal.description ? 'Save':'Add'}"/></td>
         </tr>
     </table>
 </form>

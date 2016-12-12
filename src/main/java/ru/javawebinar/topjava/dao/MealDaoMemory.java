@@ -32,8 +32,8 @@ public class MealDaoMemory implements MealDao {
 
     @Override
     public void delete(int id) {
-        if (mealList.size()>id){
-            Meal mealForDelete = getById(id-1);
+        if (mealList.size()>=id){
+            Meal mealForDelete = getById(id);
             mealList.set(id-1, null);
             LOG.info("Meal was deleted. Meal:" + mealForDelete);
         }else LOG.info("Nothing for delete by Id = " + id);
@@ -45,8 +45,8 @@ public class MealDaoMemory implements MealDao {
             LOG.info("Nothing to update. Meal==NULL");
             return;
         }
-        if (mealList.contains(meal)){
-            mealList.set(mealList.indexOf(meal), new Meal(meal));
+        if (mealList.size()>=meal.getId()){
+            mealList.set(meal.getId()-1, new Meal(meal));
             LOG.info("Meal was deleted. Meal:" + meal);
         }else LOG.info("Nothing for update. Storage not contains meal:" + meal);
 
@@ -54,7 +54,7 @@ public class MealDaoMemory implements MealDao {
 
     @Override
     public Meal getById(int id) {
-        if (mealList.size()<=id || mealList.get(id-1)==null){
+        if (mealList.size()<id || mealList.get(id-1)==null){
             LOG.info("Storage not contains meal with Id=" + id);
             return null;
         }
