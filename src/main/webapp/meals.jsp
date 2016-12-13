@@ -47,10 +47,25 @@
             color: #333;
             background-color: #f0f0f0;
         }
+        .tf tr {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            border-style: none;
+            overflow: hidden;
+            word-break: normal;
+            color: #333;
+            background-color: #fff;
+        }
+
+        .ex td{
+            background-color: #f08080;
+        }
+
+
     </style>
 </head>
 <body>
-<a href="index.jsp">Back to main menu</a>
+<a href="\topjava">Back to main menu</a>
 
 <br/>
 <br/>
@@ -67,7 +82,7 @@
         <th width="60">Delete</th>
     </tr>
     <c:forEach var="meal" items="${mealList}">
-        <tr>
+        <tr class="${meal.exceed ? 'ex' : 'tg'}">
             <td>${meal.id}</td>
             <td>${meal.date} ${meal.time}</td>
             <td>${meal.description}</td>
@@ -78,12 +93,12 @@
     </c:forEach>
 </table>
 
-<h2>Add / Edit a User</h2>
+<h2>Add / Edit a Meal</h2>
 
 <c:url var="addAction" value="/meals/add"/>
 
 <form action="${addAction}" commandName="meal" method="post">
-    <table>
+    <table class="tf">
         <c:if test="${!empty curMeal.description}">
             <tr>
                 <td>ID</td>
