@@ -6,8 +6,7 @@ import java.time.LocalDateTime;
  * GKislin
  * 11.01.2015.
  */
-public class MealWithExceed {
-    private final Integer id;
+public class MealWithExceed extends BaseEntity{
 
     private final LocalDateTime dateTime;
 
@@ -23,10 +22,6 @@ public class MealWithExceed {
         this.description = description;
         this.calories = calories;
         this.exceed = exceed;
-    }
-
-    public Integer getId() {
-        return id;
     }
 
     public LocalDateTime getDateTime() {
