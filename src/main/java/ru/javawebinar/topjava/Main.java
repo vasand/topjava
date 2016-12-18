@@ -1,5 +1,8 @@
 package ru.javawebinar.topjava;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * User: gkislin
  * Date: 05.08.2015

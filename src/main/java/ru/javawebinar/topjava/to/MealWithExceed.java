@@ -1,4 +1,6 @@
-package ru.javawebinar.topjava.model;
+package ru.javawebinar.topjava.to;
+
+import ru.javawebinar.topjava.model.BaseEntity;
 
 import java.time.LocalDateTime;
 
@@ -6,7 +8,7 @@ import java.time.LocalDateTime;
  * GKislin
  * 11.01.2015.
  */
-public class MealWithExceed extends BaseEntity{
+public class MealWithExceed extends BaseEntity {
 
     private final LocalDateTime dateTime;
 
