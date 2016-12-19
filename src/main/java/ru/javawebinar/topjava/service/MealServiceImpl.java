@@ -4,8 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
+import ru.javawebinar.topjava.to.MealWithExceed;
+import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFound;
@@ -21,13 +25,14 @@ public class MealServiceImpl implements MealService {
     private MealRepository repository;
 
     @Override
-    public Meal save(Meal meal) {
-        return repository.save(meal);
+    public MealWithExceed save(MealWithExceed meal, int userId) {
+        repository.save(new Meal(meal.getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories(), userId));
+        return meal;
     }
 
     @Override
-    public void update(Meal meal) {
-        repository.save(meal);
+    public void update(MealWithExceed meal, int userId) throws NotFoundException {
+        repository.save(checkNotFoundWithId(repository.get(meal.getId(), userId), meal.getId()));
     }
 
     @Override
@@ -36,12 +41,13 @@ public class MealServiceImpl implements MealService {
     }
 
     @Override
-    public Meal get(int id, int userId) throws NotFoundException {
-        return null;
+    public MealWithExceed get(int id, int userId, int caloriesPerDay) throws NotFoundException {
+        return checkNotFoundWithId(getAll(userId, LocalDate.MIN, LocalTime.MIN, LocalDate.MAX, LocalTime.MAX, caloriesPerDay).
+                stream().filter(m->m.getId()==id).findFirst().get(), id);
     }
 
     @Override
-    public List<Meal> getAll(int userId) {
-        return null;
+    public List<MealWithExceed> getAll(int userId, LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime, int caloriesPerDay) {
+        return MealsUtil.getFilteredWithExceeded(repository.getAll(userId, startDate, endDate), startTime, endTime, caloriesPerDay);
     }
 }

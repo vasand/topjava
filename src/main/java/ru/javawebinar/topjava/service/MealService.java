@@ -1,8 +1,10 @@
 package ru.javawebinar.topjava.service;
 
-import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.to.MealWithExceed;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 /**
@@ -11,13 +13,13 @@ import java.util.List;
  */
 public interface MealService {
 
-    Meal save(Meal meal);
+    MealWithExceed save(MealWithExceed meal, int userId);
 
-    void update(Meal meal);
+    void update(MealWithExceed meal, int userId);
 
     void delete(int id, int userId) throws NotFoundException;
 
-    Meal get(int id, int userId) throws NotFoundException;
+    MealWithExceed get(int id, int userId, int caloriesPerDay) throws NotFoundException;
 
-    List<Meal> getAll(int userId);
+    List<MealWithExceed> getAll(int userId, LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime, int caloriesPerDay);
 }
