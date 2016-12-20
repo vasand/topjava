@@ -26,7 +26,7 @@ public class MealServiceImpl implements MealService {
 
     @Override
     public MealWithExceed save(MealWithExceed meal, int userId) {
-        repository.save(new Meal(meal.getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories(), userId));
+        repository.save(new Meal(null, meal.getDateTime(), meal.getDescription(), meal.getCalories(), userId));
         return meal;
     }
 

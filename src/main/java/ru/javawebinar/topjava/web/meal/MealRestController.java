@@ -23,6 +23,10 @@ public class MealRestController {
     private MealService service;
 
     public List<MealWithExceed> getAll(LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime){
+        startDate = startDate==null?LocalDate.MIN:startDate;
+        endDate   = endDate==null?LocalDate.MAX:endDate;
+        startTime = startTime==null?LocalTime.MIN:startTime;
+        endTime   = endTime==null?LocalTime.MAX:endTime;
         return service.getAll(AuthorizedUser.id(), startDate, startTime, endDate, endTime, AuthorizedUser.getCaloriesPerDay());
     }
 
@@ -42,8 +46,15 @@ public class MealRestController {
         return service.get(id, AuthorizedUser.id(), AuthorizedUser.getCaloriesPerDay());
     }
 
-    public void delete(int id){
+    public void delete(int id)throws NotFoundException{
         service.delete(id, AuthorizedUser.id());
     }
 
+    public void save(MealWithExceed meal){
+        service.save(meal, AuthorizedUser.id());
+    }
+
+    public void update(MealWithExceed meal) throws NotFoundException{
+        service.update(meal, AuthorizedUser.id());
+    }
 }
