@@ -82,7 +82,7 @@ public class MealServlet extends HttpServlet {
                     new MealWithExceed(null, LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000, false) :
                     controller.get(getId(request));
             request.setAttribute("meal", meal);
-            request.getRequestDispatcher("meal.jsp").forward(request, response);
+            request.getRequestDispatcher("meal.jsp ").forward(request, response);
         }
     }
 
