@@ -32,7 +32,8 @@ public class MealServiceImpl implements MealService {
 
     @Override
     public void update(MealWithExceed meal, int userId) throws NotFoundException {
-        repository.save(checkNotFoundWithId(repository.get(meal.getId(), userId), meal.getId()));
+        checkNotFoundWithId(repository.get(meal.getId(), userId), meal.getId());
+        repository.save(new Meal(meal.getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories(), userId));
     }
 
     @Override

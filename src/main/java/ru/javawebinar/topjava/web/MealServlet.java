@@ -17,7 +17,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
@@ -63,10 +65,23 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
+        String strStartDate = request.getParameter("startDate")==null?"":request.getParameter("startDate");
+        String strEndDate = request.getParameter("endDate")==null?"":request.getParameter("endDate");
+        String strStartTime = request.getParameter("startTime")==null?"":request.getParameter("startTime");
+        String strEndTime = request.getParameter("endTime")==null?"":request.getParameter("endTime");
 
-        if (action == null) {
+        LocalDate startDate = strStartDate.isEmpty()?null:LocalDate.parse(strStartDate);
+        LocalDate endDate = strEndDate.isEmpty()?null:LocalDate.parse(strEndDate);
+        LocalTime startTime = strStartTime.isEmpty()?null:LocalTime.parse(strStartTime);
+        LocalTime endTime = strEndTime.isEmpty()?null:LocalTime.parse(strEndTime);
+
+        if (action == null || "meals".equals(action)) {
             LOG.info("getAll");
-            request.setAttribute("meals", controller.getAll());
+            request.setAttribute("startDate", startDate);
+            request.setAttribute("endDate", endDate);
+            request.setAttribute("startTime", startTime);
+            request.setAttribute("endTime", endTime);
+            request.setAttribute("meals", controller.getAll(startDate, startTime, endDate, endTime));
 
             request.getRequestDispatcher("/meals.jsp").forward(request, response);
 
@@ -74,15 +89,21 @@ public class MealServlet extends HttpServlet {
             int id = getId(request);
             LOG.info("Delete {}", id);
             controller.delete(id);
-
-            response.sendRedirect("meals");
+            request.setAttribute("startDate", startDate);
+            request.setAttribute("endDate", endDate);
+            request.setAttribute("startTime", startTime);
+            request.setAttribute("endTime", endTime);
+            request.setAttribute("meals", controller.getAll(startDate, startTime, endDate, endTime));
+            request.getRequestDispatcher("/meals.jsp").forward(request, response);
+//            response.sendRedirect("meals");
 
         } else if ("create".equals(action) || "update".equals(action)) {
             final MealWithExceed meal = action.equals("create") ?
                     new MealWithExceed(null, LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000, false) :
                     controller.get(getId(request));
             request.setAttribute("meal", meal);
-            request.getRequestDispatcher("meal.jsp ").forward(request, response);
+            request.getRequestDispatcher("meal.jsp").forward(request, response);
+
         }
     }
 
